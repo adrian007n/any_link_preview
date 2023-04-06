@@ -278,6 +278,25 @@ class AnyLinkPreviewState extends State<AnyLinkPreview> {
     }
     super.initState();
   }
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+  }
+  @override
+  void didUpdateWidget(covariant AnyLinkPreview oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.link != oldWidget.link || widget.proxyUrl != oldWidget.proxyUrl) {
+      _linkValid = AnyLinkPreview.isValidLink(widget.link);
+      if ((widget.proxyUrl ?? '').isNotEmpty) {
+        _proxyValid = AnyLinkPreview.isValidLink(widget.proxyUrl!);
+      }
+      if (_linkValid && _proxyValid) {
+        var linkToFetch = ((widget.proxyUrl ?? '') + widget.link).trim();
+        _loading = true;
+        _getInfo(linkToFetch);
+      }
+    }
+  }
 
   Future<void> _getInfo(String link) async {
     _info = await AnyLinkPreview._getMetadata(
@@ -307,7 +326,7 @@ class AnyLinkPreviewState extends State<AnyLinkPreview> {
 
   Widget _buildPlaceHolder(double defaultHeight) {
     return Container(
-      height: defaultHeight,
+      height: 120,
       child: LayoutBuilder(builder: (context, constraints) {
         var layoutWidth = constraints.biggest.width;
         var layoutHeight = constraints.biggest.height;
@@ -344,7 +363,7 @@ class AnyLinkPreviewState extends State<AnyLinkPreview> {
             : widget.boxShadow ??
                 [BoxShadow(blurRadius: 3, color: Colors.grey)],
       ),
-      height: height,
+      // height: height,
       child: (widget.displayDirection == UIDirection.uiDirectionHorizontal)
           ? LinkViewHorizontal(
               key: widget.key ?? Key(originalLink.toString()),

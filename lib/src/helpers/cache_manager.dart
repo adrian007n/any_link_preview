@@ -5,9 +5,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 class CacheManager {
   static Future getJson({required String key}) async {
     final sharedPreferences = await SharedPreferences.getInstance();
-    dynamic cache = sharedPreferences.getString(key);
-    var jsonMapCache = jsonDecode(cache) as Map<dynamic, dynamic>;
-    return jsonMapCache;
+    var cache = sharedPreferences.getString(key);
+    if (cache != null) {
+      var jsonMapCache = jsonDecode(cache) as Map<String, dynamic>;
+      return jsonMapCache;
+    }
   }
 
   static Future deleteKey(String key, [dynamic takeAction]) async {

@@ -70,30 +70,67 @@ class LinkViewVertical extends StatelessWidget {
           child: Column(
             children: <Widget>[
               showMultiMedia!
-                  ? Expanded(
-                      flex: 2,
-                      child: imageProvider == null
-                          ? Container(color: bgColor ?? Colors.grey)
-                          : Container(
-                              padding: EdgeInsets.only(bottom: 15),
-                              decoration: BoxDecoration(
-                                borderRadius: radius == 0
-                                    ? BorderRadius.zero
-                                    : BorderRadius.only(
-                                        topLeft: Radius.circular(12),
-                                        topRight: Radius.circular(12),
-                                      ),
-                                image: DecorationImage(
-                                  image: imageProvider!,
-                                  fit: BoxFit.fitWidth,
-                                ),
-                              ),
-                            ),
-                    )
+                  ? (imageProvider == null
+                  ? Container(color: bgColor ?? Colors.grey)
+                  : Container(
+                padding: EdgeInsets.only(bottom: 0),
+                height: 182,
+                decoration: BoxDecoration(
+                  borderRadius: radius == 0
+                      ? BorderRadius.zero
+                      : BorderRadius.only(
+                    topLeft: Radius.circular(12),
+                    topRight: Radius.circular(12),
+                  ),
+                  image: DecorationImage(
+                    image: imageProvider!,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ))
                   : SizedBox(height: 5),
-              _buildTitleContainer(
-                  titleTS_, computeTitleLines(layoutHeight, layoutWidth)),
-              _buildBodyContainer(bodyTS_, computeBodyLines(layoutHeight)),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(15, 10, 15, 0),
+                child: Container(
+                  alignment: Alignment(-1.0, -1.0),
+                  child: Text(
+                    Uri.parse(url).host,
+                    style: TextStyle(
+                        fontFamily: "Inter",
+                        fontWeight: FontWeight.w500,
+                        fontSize: 12,
+                        color: Color(0xFF757575)
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                    // maxLines: maxLines_,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(15, 3, 15, 3),
+                child: Container(
+                  alignment: Alignment(-1.0, -1.0),
+                  child: Text(
+                    title,
+                    maxLines: 2,
+                    style: titleTS_,
+                    overflow: TextOverflow.ellipsis,
+                    // maxLines: maxLines_,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(15, 0, 15, 10),
+                child: Container(
+                  alignment: Alignment(-1.0, -1.0),
+                  child: Text(
+                    description,
+                    style: bodyTS_,
+                    overflow: bodyTextOverflow ?? TextOverflow.ellipsis,
+                    maxLines: bodyMaxLines,
+                  ),
+                ),
+              ),
             ],
           ));
     });

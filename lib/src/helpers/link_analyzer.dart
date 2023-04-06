@@ -67,7 +67,7 @@ class LinkAnalyzer {
         headers: headers,
         // 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko)',
         userAgent:
-            'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)',
+            'Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.0.0 Safari/537.36',
       );
 
   /// Fetches a [url], validates it, and returns [Metadata].
@@ -90,9 +90,10 @@ class LinkAnalyzer {
 
     /// Default values; Domain name as the [title],
     /// URL as the [description]
-    info?.title = getDomain(url);
-    info?.desc = url;
-    info?.url = url;
+    info = Metadata();
+    info.title = getDomain(url);
+    info.desc = url;
+    info.url = url;
 
     try {
       // Make our network call
@@ -106,9 +107,9 @@ class LinkAnalyzer {
       final headerContentType = response.headers['content-type'];
 
       if (headerContentType != null && headerContentType.startsWith('image/')) {
-        info?.title = '';
-        info?.desc = '';
-        info?.image = url;
+        info.title = '';
+        info.desc = '';
+        info.image = url;
         return info;
       }
 
